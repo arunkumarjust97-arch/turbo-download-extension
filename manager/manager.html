@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TurboSpeed Downloader - Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="manager.css">
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="managerThunderGrad" x1="4" y1="2" x2="20" y2="22" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#c084fc"/>
+              <stop offset="50%" stop-color="#6366f1"/>
+              <stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient>
+          </defs>
+          <path d="M13.5 2L4 13.5H11.5L9.5 22L20 9.5H13L14.5 2H13.5Z" fill="url(#managerThunderGrad)"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <h2>TURBOSPEED</h2>
+        <span>ACCELERATOR PRO</span>
+      </div>
+    </div>
+
+    <nav class="nav-menu">
+      <div class="nav-item active" data-view="active">
+        <svg viewBox="0 0 24 24">
+          <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/>
+        </svg>
+        <span>Active Transfers</span>
+        <span class="nav-badge" id="navActiveBadge">0</span>
+      </div>
+
+      <div class="nav-item" data-view="history">
+        <svg viewBox="0 0 24 24">
+          <path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/>
+        </svg>
+        <span>Completed History</span>
+        <span class="nav-badge" id="navHistoryBadge" style="background: rgba(255,255,255,0.1); color: #fff;">0</span>
+      </div>
+
+      <div class="nav-item" data-view="settings">
+        <svg viewBox="0 0 24 24">
+          <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+        </svg>
+        <span>Settings & Rules</span>
+      </div>
+    </nav>
+
+    <!-- Engine Status Box -->
+    <div class="engine-status-box">
+      <div class="engine-status-header">
+        <span>Turbo Engine</span>
+        <div class="status-dot-active" id="sidebarEngineDot"></div>
+      </div>
+      <div class="engine-threads-readout" id="sidebarThreadsReadout">
+        8 <span>Parallel Threads</span>
+      </div>
+      <div style="font-size: 11px; color: var(--text-muted);" id="sidebarInterceptionStatus">
+        Auto-Interception: Enabled
+      </div>
+    </div>
+
+    <!-- MaxiMux Concurrent Slots Box -->
+    <div class="engine-status-box" style="margin-top: 10px; border-color: rgba(124, 58, 237, 0.25);">
+      <div class="engine-status-header">
+        <span style="color: var(--cyan-glow);">⚡ MaxiMux</span>
+        <div class="status-dot-active" id="maximuxStatusDot" style="background: #6366f1; box-shadow: 0 0 8px rgba(99,102,241,0.5);"></div>
+      </div>
+      <div style="font-size: 12px; font-weight: 700; color: var(--text-primary); margin: 4px 0 2px;">
+        <span id="maximuxActiveCount">0</span><span style="color: var(--text-muted); font-weight: 400;"> / 4 slots active</span>
+      </div>
+      <div style="display: flex; gap: 3px; margin-top: 6px;" id="maximuxSlotBars">
+        <div class="maximux-slot" id="maximuxSlot0"></div>
+        <div class="maximux-slot" id="maximuxSlot1"></div>
+        <div class="maximux-slot" id="maximuxSlot2"></div>
+        <div class="maximux-slot" id="maximuxSlot3"></div>
+      </div>
+      <div style="font-size: 10px; color: var(--text-muted); margin-top: 5px;" id="maximuxThreadsInfo">
+        Dynamic thread split active
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <h1 class="page-title" id="pageTitle">Active Accelerated Transfers</h1>
+        <div class="stat-pill">
+          <span>Throughput:</span>
+          <strong id="topbarSpeed">0.0 MB/s</strong>
+        </div>
+        <div class="stat-pill">
+          <span>Total Accelerated:</span>
+          <strong id="topbarTotalDownloaded">0 MB</strong>
+        </div>
+      </div>
+
+      <div class="topbar-actions">
+        <button class="btn-primary" id="btnOpenNewDownloadModal">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+          </svg>
+          New Turbo Download
+        </button>
+      </div>
+    </header>
+
+    <!-- Viewport -->
+    <div class="dashboard-viewport">
+      <!-- Live Real-Time Throughput Graph -->
+      <section class="chart-panel view-panel active-view" id="chartPanel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="color: var(--cyan-glow);">
+              <path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/>
+            </svg>
+            Real-Time Speed Waveform
+          </div>
+          <div class="chart-stats-row">
+            <div class="chart-stat-item">
+              <span class="lbl">Instant Speed</span>
+              <span class="val" id="chartInstantSpeed">0.0 MB/s</span>
+            </div>
+            <div class="chart-stat-item">
+              <span class="lbl">Peak Burst</span>
+              <span class="val" id="chartPeakSpeed" style="color: var(--green-neon);">0.0 MB/s</span>
+            </div>
+          </div>
+        </div>
+        <canvas id="speedChart" width="1000" height="120"></canvas>
+      </section>
+
+      <!-- Active Transfers View -->
+      <section class="table-panel view-panel active-view" id="viewActive">
+        <div class="table-header">
+          <div style="font-weight: 700; font-size: 13px; color: var(--text-secondary); text-transform: uppercase;">
+            Live Segmented Queue
+          </div>
+          <div class="search-box">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="color: var(--text-muted)">
+              <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+            <input type="text" id="searchActiveInput" placeholder="Filter active downloads...">
+          </div>
+        </div>
+
+        <table class="downloads-table">
+          <thead>
+            <tr>
+              <th>File</th>
+              <th>Progress</th>
+              <th>Size</th>
+              <th>Speed</th>
+              <th>ETA</th>
+              <th>Parallel Threads</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="activeTableBody">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
+        <div id="noActivePlaceholder" style="padding: 36px; text-align: center; color: var(--text-muted); font-size: 13px;">
+          No active transfers right now. Downloads will automatically appear here and accelerate.
+        </div>
+
+        <!-- MaxiMux Queue Status Banner -->
+        <div id="maximuxQueueBanner" style="display:none; margin: 8px 16px 4px; padding: 10px 14px; background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.2); border-radius: 8px; font-size: 12px; color: var(--text-secondary); display: flex; align-items: center; gap: 8px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="color: var(--brand-primary); flex-shrink:0;">
+            <path d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+          </svg>
+          <span id="maximuxQueueText">MaxiMux: 4/4 slots active · new downloads auto-cancelled until a slot frees</span>
+        </div>
+      </section>
+
+      <!-- History View -->
+      <section class="table-panel view-panel" id="viewHistory">
+        <div class="table-header">
+          <div style="font-weight: 700; font-size: 13px; color: var(--text-secondary); text-transform: uppercase;">
+            Accelerated Download History
+          </div>
+          <button class="action-btn-sm" id="btnClearHistory">
+            Clear History
+          </button>
+        </div>
+
+        <table class="downloads-table">
+          <thead>
+            <tr>
+              <th>File</th>
+              <th>Size</th>
+              <th>Average Speed</th>
+              <th>Duration</th>
+              <th>Completed Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="historyTableBody">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
+        <div id="noHistoryPlaceholder" style="padding: 36px; text-align: center; color: var(--text-muted); font-size: 13px;">
+          No downloaded files recorded yet.
+        </div>
+      </section>
+
+      <!-- Settings View -->
+      <section class="table-panel view-panel" id="viewSettings" style="padding: 24px;">
+        <div style="margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border-subtle);">
+          <div style="font-size: 17px; font-weight: 800; color: var(--text-primary); letter-spacing: -0.3px;">
+            Settings & Rules
+          </div>
+          <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">
+            Manage multi-threaded acceleration rules, stream thresholds, and browser integration.
+          </div>
+        </div>
+
+        <div class="settings-container">
+          <div class="setting-card">
+            <div class="setting-card-info">
+              <span class="setting-card-title">Master Turbo Acceleration</span>
+              <span class="setting-card-desc">Enable multi-threaded segmented byte-range downloads and dynamic bandwidth acceleration.</span>
+            </div>
+            <div class="setting-card-action">
+              <label class="switch" title="Toggle Master Acceleration">
+                <input type="checkbox" id="settingTurboEnabled" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="setting-card">
+            <div class="setting-card-info">
+              <span class="setting-card-title">Automatic Browser Download Interception</span>
+              <span class="setting-card-desc">Automatically detect standard browser downloads and boost them with TurboSpeed.</span>
+            </div>
+            <div class="setting-card-action">
+              <label class="switch" title="Toggle Auto Interception">
+                <input type="checkbox" id="settingAutoIntercept" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="setting-card">
+            <div class="setting-card-info">
+              <span class="setting-card-title">Universal Right-Click Video Download</span>
+              <span class="setting-card-desc">Enable right-click context menu "⚡ Turbo Download Video" on any video player or media stream (clean video player without intrusive overlays).</span>
+            </div>
+            <div class="setting-card-action">
+              <label class="switch" title="Toggle Right-Click Video Download">
+                <input type="checkbox" id="settingVideoRightClick" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="setting-card">
+            <div class="setting-card-info">
+              <span class="setting-card-title">Parallel Connections Per Download</span>
+              <span class="setting-card-desc">Higher threads bypass server rate-limiting. Recommended: 8 threads (best acceleration &amp; stability).</span>
+            </div>
+            <div class="setting-card-action">
+              <select id="settingThreads" style="width: 235px;">
+                <option value="2">2 Threads (Gentle)</option>
+                <option value="4">4 Threads (Standard)</option>
+                <option value="8" selected>8 Threads (Default - Best Option)</option>
+                <option value="12">12 Threads (Extreme)</option>
+                <option value="16">16 Threads (Ultra)</option>
+                <option value="24">24 Threads (Gigabit Pipeline)</option>
+                <option value="32">32 Threads (Maximum Warp)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="setting-card">
+            <div class="setting-card-info">
+              <span class="setting-card-title">Minimum File Size for Auto-Boost (MB)</span>
+              <span class="setting-card-desc">Small files under this size download normally without multithreading overhead.</span>
+            </div>
+            <div class="setting-card-action">
+              <input type="number" id="settingMinSize" value="1" min="0" step="0.5" style="width: 140px;">
+            </div>
+          </div>
+
+          <div class="setting-card" style="border-color: rgba(99,102,241,0.25);">
+            <div class="setting-card-info">
+              <span class="setting-card-title">⚡ MaxiMux: Max Concurrent Downloads</span>
+              <span class="setting-card-desc">Maximum simultaneous downloads allowed (1–4). New downloads beyond this limit are auto-cancelled. Threads are split dynamically across concurrent downloads for best total speed.</span>
+            </div>
+            <div class="setting-card-action">
+              <select id="settingMaxConcurrent" style="width: 235px;">
+                <option value="1">1 Download (Single-stream)</option>
+                <option value="2">2 Downloads (Dual stream)</option>
+                <option value="3">3 Downloads (Triple stream)</option>
+                <option value="4" selected>4 Downloads (MaxiMux — Recommended)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="setting-card" style="border-color: rgba(99,102,241,0.25);">
+            <div class="setting-card-info">
+              <span class="setting-card-title">⚡ Auto-Rebuild Failed Downloads</span>
+              <span class="setting-card-desc">Automatically retry and rebuild failed downloads up to 3 times with exponential backoff (1.5s → 2.25s → 3.4s delays) before falling back to native browser download.</span>
+            </div>
+            <div class="setting-card-action">
+              <label class="switch" title="Toggle Auto-Rebuild">
+                <input type="checkbox" id="settingAutoRebuild" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="setting-card">
+            <div class="setting-card-info">
+              <span class="setting-card-title">Desktop Sound & Toast Notifications</span>
+              <span class="setting-card-desc">Display instant alerts when downloads start and complete.</span>
+            </div>
+            <div class="setting-card-action">
+              <label class="switch" title="Toggle Notifications">
+                <input type="checkbox" id="settingNotifications" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 12px; margin-top: 8px; flex-wrap: wrap;">
+            <button class="btn-reset" id="btnResetSettings" type="button" title="Reset all configuration values to defaults">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+              </svg>
+              <span>Reset to Defaults</span>
+            </button>
+            <button class="btn-primary" id="btnSaveSettings" type="button">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                <polyline points="17 21 17 13 7 13 7 21"/>
+                <polyline points="7 3 7 8 15 8"/>
+              </svg>
+              <span>Save Settings</span>
+            </button>
+            <span id="saveStatusFeedback" style="font-size: 13px; font-weight: 700; color: var(--green-neon); display: none;">
+              ✓ Settings saved successfully!
+            </span>
+          </div>
+
+          <!-- Support & Bug Report Mail Cover Card -->
+          <div class="mail-cover-card">
+            <div class="mail-cover-banner">
+              <div class="mail-cover-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M20 4H4C2.9 4 2.01 4.9 2.01 6L2 18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 8L12 13L4 8V6L12 11L20 6V8Z"/>
+                </svg>
+                DIRECT DEVELOPER INBOX
+              </div>
+              <h3 class="mail-cover-title">Support & Bug Report</h3>
+              <p class="mail-cover-desc">
+                Need help with download acceleration, encountered a bug, or have a feature request? Reach out directly to our developer team:
+              </p>
+            </div>
+
+            <div class="mail-cover-action-row">
+              <div class="mail-pill-display">
+                <div class="mail-pill-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="4" width="20" height="16" rx="2"/>
+                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                  </svg>
+                </div>
+                <span class="mail-address-text">devteam.official@myyahoo.com</span>
+              </div>
+
+              <div class="mail-cover-buttons">
+                <a href="mailto:devteam.official@myyahoo.com" class="btn-email-primary" title="Open mail client to send message">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="22" y1="2" x2="11" y2="13"/>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                  </svg>
+                  <span>Send Email</span>
+                </a>
+                <button type="button" class="btn-copy-email" id="btnCopySupportEmail" title="Copy email address to clipboard">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                  </svg>
+                  <span id="copyEmailText">Copy Email</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- GitHub Repository (Image Only) -->
+            <div class="mail-cover-github-only">
+              <a href="https://github.com/arunkumarjust97-arch/turbo-download-extension.git" target="_blank" rel="noopener noreferrer" class="github-image-only-link" title="Open GitHub Repository: https://github.com/arunkumarjust97-arch/turbo-download-extension.git">
+                <img src="../assets/github.png" alt="GitHub Repository" class="github-standalone-img">
+              </a>
+            </div>
+
+            <!-- Professional Copyright Notice -->
+            <div class="mail-cover-copyright">
+              <p class="copyright-main">
+                © 2026 TurboSpeed Downloader Engine · Designed &amp; Engineered by <span class="author-highlight">Arun Kumar</span>
+              </p>
+              <p class="copyright-sub">
+                All Rights Reserved · Enterprise Multi-Threaded Range Pipeline Architecture
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- New Turbo Download Modal -->
+  <div class="modal-overlay" id="newDownloadModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M13.5 2L4 13.5H11.5L9.5 22L20 9.5H13L14.5 2H13.5Z" fill="url(#managerThunderGrad)"/>
+          </svg>
+          Add New Turbo Download
+        </div>
+        <button class="icon-btn" id="btnCloseModal">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="modalUrlInput">Download URL (Direct HTTP / HTTPS Link)</label>
+          <input type="text" id="modalUrlInput" placeholder="https://example.com/large-file.zip">
+        </div>
+        <div class="form-group">
+          <label for="modalFilenameInput">Custom Filename (Optional)</label>
+          <input type="text" id="modalFilenameInput" placeholder="Leave blank to auto-detect from server">
+        </div>
+        <div class="form-group">
+          <label for="modalThreadsSelect">Parallel Threads for this Download</label>
+          <select id="modalThreadsSelect">
+            <option value="8">8 Threads (Fast)</option>
+            <option value="12">12 Threads (High Speed)</option>
+            <option value="16" selected>16 Threads (Maximum Boost Speed)</option>
+            <option value="32">32 Threads (Extreme Warp Speed)</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="btnCancelModal">Cancel</button>
+        <button class="btn-primary" id="btnStartModalDownload">
+          <span>Start Turbo Download</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="manager.js"></script>
+</body>
+</html>
