@@ -1,0 +1,61 @@
+{
+  "manifest_version": 3,
+  "name": "TurboSpeed Downloader - Automatic Download Accelerator",
+  "short_name": "TurboSpeed",
+  "version": "1.0.0",
+  "description": "Accelerates downloads up to 10x with automatic multi-threaded range segmentation, real-time speedometers, and smart interception.",
+  "minimum_chrome_version": "109",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "turbospeed-downloader@extension.local",
+      "strict_min_version": "115.0"
+    }
+  },
+  "icons": {
+    "16": "assets/icon16.png",
+    "32": "assets/icon32.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
+  },
+  "permissions": [
+    "downloads",
+    "storage",
+    "offscreen",
+    "contextMenus",
+    "activeTab",
+    "notifications",
+    "declarativeNetRequest"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background/service-worker.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "assets/icon16.png",
+      "32": "assets/icon32.png",
+      "48": "assets/icon48.png",
+      "128": "assets/icon128.png"
+    },
+    "default_title": "TurboSpeed Downloader"
+  },
+  "options_page": "manager/manager.html",
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content/content.js"],
+      "css": ["content/content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/*", "manager/*", "offscreen/*"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
