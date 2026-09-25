@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TurboSpeed Downloader</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="brand">
+        <div class="logo-box">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="headerThunderGrad" x1="4" y1="2" x2="20" y2="22" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#c084fc"/>
+                <stop offset="50%" stop-color="#6366f1"/>
+                <stop offset="100%" stop-color="#ec4899"/>
+              </linearGradient>
+            </defs>
+            <path d="M13.5 2L4 13.5H11.5L9.5 22L20 9.5H13L14.5 2H13.5Z" fill="url(#headerThunderGrad)"/>
+          </svg>
+        </div>
+        <div class="brand-info">
+          <h1>TURBO<span class="brand-accent">SPEED</span><span class="brand-dot"></span> <span class="badge-auto">AUTO</span></h1>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="btnManager" class="icon-btn" title="Settings & Dashboard">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Master Turbo Toggle Card -->
+    <div class="turbo-master-card">
+      <div class="turbo-status-left">
+        <div class="turbo-title">
+          <span class="pulse-dot" id="turboDot"></span>
+          <span id="turboStatusText">AUTOMATIC TURBO BOOST</span>
+        </div>
+        <div class="turbo-subtitle" id="turboSubtext">Pipelined byte-range multithreading</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="turboToggle" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <!-- Universal Video Stream Detector Card -->
+    <div class="yt-download-card" id="ytDownloadCard" style="display:none">
+      <div class="yt-card-header">
+        <div class="yt-icon-wrap" id="videoCardIcon">
+          <!-- Universal Video play icon -->
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="24" height="24" rx="6" fill="#00f2fe"/>
+            <path d="M10 16.5v-9l6 4.5-6 4.5z" fill="#0f172a"/>
+          </svg>
+        </div>
+        <div class="yt-card-info">
+          <div class="yt-card-label" id="videoCardLabel">🎬 Video Stream Detected</div>
+          <div class="yt-video-title" id="ytVideoTitle">Loading...</div>
+        </div>
+      </div>
+      <div class="yt-dl-actions">
+        <button id="ytDlMp4" class="yt-dl-btn yt-dl-mp4">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+          <span id="ytDlMp4Text">⚡ Turbo Download (16x Max Speed)</span>
+          <span class="yt-badge" id="ytDlBadge">HD</span>
+        </button>
+        <button id="ytDlMp3" class="yt-dl-btn yt-dl-mp3">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+          <span id="ytDlMp3Text">🎵 Extract MP3 Audio</span>
+          <span class="yt-badge yt-badge-audio">Audio</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Live Speedometer / Boost Gauge -->
+    <div class="speedometer-card">
+      <div class="speed-num-box">
+        <span class="speed-value" id="currentSpeedVal">0.0</span>
+        <span class="speed-unit" id="currentSpeedUnit">MB/s</span>
+      </div>
+
+      <div class="boost-multiplier" id="boostMultiplierBadge">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M13 2.05v3.03c3.39.49 6 3.39 6 6.92 0 .9-.18 1.75-.48 2.54l2.6 1.53c.56-1.24.88-2.62.88-4.07 0-5.18-3.95-9.45-9-9.95zM12 19c-3.87 0-7-3.13-7-7 0-3.53 2.61-6.43 6-6.92V2.05c-5.05.5-9 4.77-9 9.95 0 5.52 4.47 10 9.99 10 3.31 0 6.24-1.61 8.04-4.09l-2.48-1.46C16.27 17.9 14.28 19 12 19z"/>
+        </svg>
+        <span id="boostMultiplierText">TURBO READY</span>
+      </div>
+      <div class="threads-meta">
+        <div class="meta-item">
+          <span class="meta-dot"></span>
+          <span id="activeThreadsMeta">8 Threads</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-dot" style="background: var(--green-neon)"></span>
+          <span id="responseLatencyMeta">0ms Fast Path</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Downloads Section -->
+    <div class="section-header">
+      <span class="section-title">Active Accelerated Downloads</span>
+      <span id="activeCountBadge" class="active-count-badge">0 Running</span>
+    </div>
+
+    <div class="downloads-list" id="downloadsList">
+      <!-- Empty State -->
+      <div class="empty-state" id="emptyState">
+        <div class="empty-text">Automatic Turbo Interceptor Active</div>
+        <div class="empty-subtext">Start any download in your browser. TurboSpeed will automatically split and accelerate it at maximum multi-threaded speed!</div>
+      </div>
+    </div>
+
+    <!-- Footer Controls -->
+    <div class="footer-bar">
+      <div class="threads-selector">
+        <span>Threads:</span>
+        <div class="thread-pills" id="threadPills">
+          <button class="pill-btn" data-threads="8">8x</button>
+          <button class="pill-btn" data-threads="12">12x</button>
+          <button class="pill-btn active" data-threads="16">16x Max</button>
+          <button class="pill-btn" data-threads="32">32x Warp</button>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
